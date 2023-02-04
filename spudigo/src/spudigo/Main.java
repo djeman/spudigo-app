@@ -8,8 +8,8 @@ import javax.swing.plaf.ColorUIResource;
 import spudigo.ui.WinMain;
 
 public class Main {
-	public static final String version = "Spudigo v2.8";
-	public static final String versionDate = "31 jan. 2023";
+	public static final String version = "Spudigo v2.9";
+	public static final String versionDate = "04 fev. 2023";
 	
 	/**
 	 * @param args

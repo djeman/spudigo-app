@@ -1271,6 +1271,32 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 				panelMap.setPoiArray(table.getData());
 		}
 	}
+	
+	@Override
+	public void onInsertLine() {		
+		insertLine(0.00, 0.00);
+	}
+	
+	private void insertLine(double lat, double lon) {
+		if (tabbedPane.getTabCount() > 0) {
+			SpudScroll scroll = (SpudScroll)tabbedPane.getSelectedComponent();
+			SpudTable table = scroll.getTable();
+			
+			int rowIndex = table.getSelectedRow();
+			
+			setTabTitleModified(true);
+			
+			table.insertRow(rowIndex, lat, lon);
+			table.setRowSelectionInterval(rowIndex, rowIndex);
+			table.scrollRectToVisible(table.getCellRect(rowIndex, 0, true));
+			
+			((JTable)scroll.getRowHeader().getView()).invalidate();
+			statusBar.setStatus(String.format(Config.getLangBundle().getString("statusRowNumbers"), table.getRowCount()));
+			
+			if (panelMap != null)
+				panelMap.setPoiArray(table.getData());
+		}
+	}
 
 	@Override
 	public void onDelete() {

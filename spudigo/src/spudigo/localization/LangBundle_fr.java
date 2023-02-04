@@ -68,6 +68,7 @@ public class LangBundle_fr extends ListResourceBundle {
 		{ "tbCut"   						, "Couper" },
 		{ "tbPaste"   						, "Coller" },
 		{ "tbAddLine"   					, "Ajouter une ligne" },
+		{ "tbInsertLine"   					, "Insérer une ligne" },
 		{ "tbDelete"   						, "Supprimer" },
 		{ "tbMapToggle" 		  			, "Afficher la carte" },
 		{ "tbViewToggle"   					, "Changer la vue des onglets" },

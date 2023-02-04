@@ -69,6 +69,7 @@ public class LangBundle extends ListResourceBundle {
 		{ "tbCut"   						, "Cut" },
 		{ "tbPaste"   						, "Paste" },
 		{ "tbAddLine"   					, "Add a new line" },
+		{ "tbInsertLine"   					, "Insert a new line" },
 		{ "tbDelete"   						, "Delete" },
 		{ "tbMapToggle" 		  			, "Show the map view" },
 		{ "tbViewToggle"   					, "Toggle tab view" },

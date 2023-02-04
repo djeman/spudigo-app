@@ -306,6 +306,12 @@ public class SpudTableModel extends AbstractTableModel {
 		}
 	}
 	
+	public void insertRow(int index, double lat, double lon) {
+		SpudItem item = new SpudItem(lat, lon);
+		this.data.add(index, item);
+		this.fireTableRowsInserted(index, index);
+	}
+	
 	public void removeRows(int[] selectedRows) {
 		if (selectedRows != null && selectedRows.length > 0) {
 			Arrays.sort(selectedRows);
