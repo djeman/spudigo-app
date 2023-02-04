@@ -14,3 +14,7 @@ buildNumber.properties
 .settings/
 .classpath
 .project
+
+### Spudigo Autogen ###
+spudigo_mdl/
+spudigo.cfg
