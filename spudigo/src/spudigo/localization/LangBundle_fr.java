@@ -48,13 +48,13 @@ public class LangBundle_fr extends ListResourceBundle {
 		
 		{ "askIgoVers"						, "Pour quelle version de iGO voulez vous générer le fichier?" },
 		{ "askIgoVersTitle"					, "Choix du format" },
-		{ "askReplaceFile"					, "<html>Le fichier [<b>%1$s</b>] existe déjà.<br><br>Souhaitez vous le remplacer?</html>" },
+		{ "askReplaceFile"					, "<html>Le fichier [<b>%1$s</b>] existe déjà.<br><br>Souhaitez vous le remplacer ?</html>" },
 		{ "askReplaceFileTitle"				, "Fichier existant" },
 		
 		{ "aboutTitle"						, "A propos de Spudigo" },
 		{ "aboutBuildBy"					, "Fait par" },
 		
-		{ "askDupDistance"					, "<html><b>Distance maximum entre 2 entrées suspectes:</b></html>" },
+		{ "askDupDistance"					, "<html><b>Distance maximum entre 2 entrées suspectes :</b></html>" },
 		{ "askDupDistanceTitle"				, "Recherche de doublon" },
 		
 		{ "tbNew"   						, "Nouveau" },
@@ -77,7 +77,7 @@ public class LangBundle_fr extends ListResourceBundle {
 		{ "tbModelOut"   					, "Modèle de sortie:" },
 		
 		{ "sbWelcome"   					, "Bienvenue" },
-		{ "sbDistance"   					, "Distance:" },
+		{ "sbDistance"   					, "Distance :" },
 		
 		{ "mbFile"   						, "Fichier" },
 		{ "mbCloseAll" 						, "Fermer tout" },
@@ -105,10 +105,10 @@ public class LangBundle_fr extends ListResourceBundle {
 		{ "italian"                         , "Italien" },
 		{ "russian"                         , "Russe" },
 		
-		{ "askToSave" 						, "<html>Le fichier [<b>%1$s</b>] a été modifié.<br><br>Que voulez vous faire?</html>" },
+		{ "askToSave" 						, "<html>Le fichier [<b>%1$s</b>] a été modifié.<br><br>Que souhaitez vous faire ?</html>" },
 		
 		{ "result"   						, "Résultat" },
-		{ "exportResult"					, "Résultat de l'export:" },
+		{ "exportResult"					, "Résultat de l'export :" },
 		
 		{ "enumDirTypeAll"					, "Toutes" },
 		{ "enumDirTypeUni" 					, "Unique" },
@@ -129,7 +129,7 @@ public class LangBundle_fr extends ListResourceBundle {
 		{ "errorSaveFile"					, "[%1$s] Fichier non enregistré" },
 		
 		{ "errorExportFile"					, "[<b>%1$s</b>]<br><font color=\"red\">Erreur d'enregistrement</font><br>" },
-		{ "errorExportUnknownType"			, "\n<u>Type inconnu:</u> <font color=\"red\"><b>" },
+		{ "errorExportUnknownType"			, "\n<u>Type inconnu :</u> <font color=\"red\"><b>" },
 		{ "saveSucessMes"					, "[<b>%1$s</b>]<br><font color=\"green\">Export réussi</font>%2$s<br>" },
 		{ "saveSucess"						, "[<b>%1$s</b>]<br><font color=\"green\">Export réussi</font><br>" },
 		
@@ -148,38 +148,38 @@ public class LangBundle_fr extends ListResourceBundle {
 		{ "mapStreetView" 					, "Google Street Map" },
 		{ "mapOpenStreetView" 				, "Ouvrir votre navigateur internet sur la position" },
 		{ "mapHelp" 						, "Aide Carte" },
-		{ "mapHelpMessage" 					, "<html>La carte comprend 3 raccourcis pour interagir avec les marqueurs de POI:"+
+		{ "mapHelpMessage" 					, "<html>La carte comprend 3 raccourcis pour interagir avec les marqueurs de POI :"+
 					"<table><tr><td>{<b>Maj+Clic gauche</b>}</td><td>Permet de placer un nouveau marqueur</td></tr>"+
 					"<tr><td>{<b>Maj+Mouvement souris</b>}</td><td>Permet de modifier la position du marqueur sélectionné</td></tr>" +
 					"<tr><td>{<b>Alt+Mouvement souris</b>}</td><td>Permet de modifier l'angle du marqueur sélectionné</td></tr></table></html>"},
 		
-		{ "diagIputTextLabel"				, "<html><b>Veuillez entrer une adresse:</b></html>" },
+		{ "diagIputTextLabel"				, "<html><b>Veuillez entrer une adresse :</b></html>" },
 		
-		{ "diagLatLngLabel"					, "<html><b>Veuillez entrer la latitude et la longitude:</b></html>" },
+		{ "diagLatLngLabel"					, "<html><b>Veuillez entrer la latitude et la longitude :</b></html>" },
 		{ "diagLatLngLabelErr"				, "<html><b><font color=red>Valeurs incorrectes !!!</font></b></html>" },
-		{ "diagLongitude"					, "Longitude:" },
-		{ "diagLatitude"					, "Latitude:" },
+		{ "diagLongitude"					, "Longitude :" },
+		{ "diagLatitude"					, "Latitude :" },
 		{ "diagAddressErr"					, "Adresse non trouvée" },
 		
 		{ "diagOptMapConfigSetZone"			, "<html><b>Réglages de la zone de détection</b></html>" },
-		{ "diagOptMapConfigRadAngle"		, "Angle de l'arc:" },
-		{ "diagOptMapConfigFactorX"			, "Facteur X:" },
-		{ "diagOptMapConfigFactorY"			, "Facteur Y:" },
-		{ "diagOptMapConfigColor0"			, "Couleur interne:" },
-		{ "diagOptMapConfigColor1"			, "Couleur externe:" },
-		{ "diagOptMapConfigColor2"			, "Contour sélection:" },
+		{ "diagOptMapConfigRadAngle"		, "Angle de l'arc :" },
+		{ "diagOptMapConfigFactorX"			, "Facteur X :" },
+		{ "diagOptMapConfigFactorY"			, "Facteur Y :" },
+		{ "diagOptMapConfigColor0"			, "Couleur interne :" },
+		{ "diagOptMapConfigColor1"			, "Couleur externe :" },
+		{ "diagOptMapConfigColor2"			, "Contour sélection :" },
 		{ "diagOptMapConfigSetImage"		, "<html><b>Réglages des images des marqueurs</b></html>" },
 		{ "diagOptMapConfigSetSpeed"		, "<html><b>Réglages des textes de vitesse des marqueurs</b></html>" },
 		{ "diagOptMapConfigSetZonePoi"		, "<html><b>Réglages des zones de marqueurs</b></html>" },
-		{ "diagOptMapConfigSpeedFont"		, "Police du texte:" },
-		{ "diagOptMapConfigSpeedHelp"		, "<html><b>L'origine de la position du texte sont les coordonées du marqueur.</b></html>" },
-		{ "diagOptMapConfigSpeedX"			, "Position X:" },
-		{ "diagOptMapConfigSpeedY"			, "Position Y:" },
+		{ "diagOptMapConfigSpeedFont"		, "Police du texte :" },
+		{ "diagOptMapConfigSpeedHelp"		, "<html><b>L'origine de la position du texte sont les coordonnées du marqueur.</b></html>" },
+		{ "diagOptMapConfigSpeedX"			, "Position X :" },
+		{ "diagOptMapConfigSpeedY"			, "Position Y :" },
 		{ "diagOptMapConfigCenterTextX"     , "Centrer le texte sur X" },
 		
-		{ "diagOptMapConfigZoneBeginPoi"	, "Maximum Marqueurs:" },
-		{ "diagOptMapConfigZoneMinSize"		, "Min Taille Zones:" },
-		{ "diagOptMapConfigZoneFont"		, "Police du texte:" },
+		{ "diagOptMapConfigZoneBeginPoi"	, "Maximum Marqueurs :" },
+		{ "diagOptMapConfigZoneMinSize"		, "Min Taille Zones :" },
+		{ "diagOptMapConfigZoneFont"		, "Police du texte :" },
 		
 		{ "diagFontChooser"					, "Choix de la police" },
 		{ "diagFontChooserFont"				, "Police" },
@@ -197,8 +197,8 @@ public class LangBundle_fr extends ListResourceBundle {
 		
 		{ "diagColorChooser"				, "Choix de la couleur" },
 		
-		{ "diagOptMapConfigSelected"		, "Sélection:" },
-		{ "diagOptMapConfigUnknown"			, "Inconnu:" },
+		{ "diagOptMapConfigSelected"		, "Sélection :" },
+		{ "diagOptMapConfigUnknown"			, "Inconnu :" },
 		{ "diagOptMapConfigType"			, "Type" },
 		{ "diagOptMapConfigImgPath"			, "Chemin de l'image" },
 		{ "diagOptMapConfigAskImg"			, "Sélectionner une nouvelle image" },
@@ -216,7 +216,7 @@ public class LangBundle_fr extends ListResourceBundle {
 		{ "dupEndFileTitle" 				, "Fin de fichier" },
 		{ "dupSearch" 						, "Rechercher" },
 		{ "dupCheckIgnore" 					, "Ignorer les angles inversés" },
-		{ "dupCheckAngle" 					, "<html><b>Difference accepté pour détecter un angle inversé:</b></html>" },
+		{ "dupCheckAngle" 					, "<html><b>Difference accepté pour détecter un angle inversé :</b></html>" },
 		
 		{ "templateEurPlus" 					, ";name       Nom du modèle affiché dans la liste de choix%1$s%1$s" +
 				   "name=EUR+ Fr%1$s%1$s" +
