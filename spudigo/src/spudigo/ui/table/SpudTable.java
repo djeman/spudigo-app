@@ -300,9 +300,11 @@ public class SpudTable extends JTable {
 	        menuItemArea.addActionListener(PasteAction);
 	        popupArea.add(menuItemArea);
 	        
-	        menuItemArea = new JMenuItem(Config.getLangBundle().getString("tbInsert"));
-	        menuItemArea.addActionListener(InsertAction);
-	        popupArea.add(menuItemArea);
+	        if (rowsIndex.length > 0) {
+		        menuItemArea = new JMenuItem(Config.getLangBundle().getString("tbInsert"));
+		        menuItemArea.addActionListener(InsertAction);
+		        popupArea.add(menuItemArea);
+	        }
         }
         
 		if (rowsIndex.length > 0 || copyRow.size() > 0)
