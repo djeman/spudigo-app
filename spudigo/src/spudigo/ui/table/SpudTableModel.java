@@ -306,6 +306,23 @@ public class SpudTableModel extends AbstractTableModel {
 		}
 	}
 	
+	public void insertRow(int index, SpudItem copyRow) {
+		if (copyRow != null) {
+			SpudItem item = new SpudItem(
+					copyRow.getLat(),
+					copyRow.getLon());
+			item.setBinType(copyRow.getBinType());
+			item.setDirection(copyRow.getDirection());
+			item.setDirType(copyRow.getDirType());
+			item.setSpeed(copyRow.getSpeed());
+			item.setStatus(copyRow.getStatus());
+			item.setTxtType(copyRow.getTxtType());
+			item.setComment(copyRow.getComment());
+			this.data.add(index, item);
+			this.fireTableRowsInserted(index, index);
+		}
+	}
+	
 	public void insertRow(int index, double lat, double lon) {
 		SpudItem item = new SpudItem(lat, lon);
 		this.data.add(index, item);

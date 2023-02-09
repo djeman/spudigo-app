@@ -68,6 +68,7 @@ public class LangBundle extends ListResourceBundle {
 		{ "tbCopy"   						, "Copy" },
 		{ "tbCut"   						, "Cut" },
 		{ "tbPaste"   						, "Paste" },
+		{ "tbInsert"   						, "Insert" },
 		{ "tbAddLine"   					, "Add a new line" },
 		{ "tbInsertLine"   					, "Insert a new line" },
 		{ "tbDelete"   						, "Delete" },

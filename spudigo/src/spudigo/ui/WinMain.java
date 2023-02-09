@@ -1242,6 +1242,30 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 			}
 		}
 	}
+	
+	@Override
+	public void onInsert() {
+		if (tabbedPane.getTabCount() > 0) {
+			SpudScroll scroll = (SpudScroll)tabbedPane.getSelectedComponent();
+			SpudTable table = scroll.getTable();
+			
+			int rowIndex = table.getSelectedRow();
+			
+			if (rowIndex > -1 && copyRow.size() > 0) {
+				for (SpudItem item:copyRow)
+					table.insertRow(rowIndex++, item);
+				
+				table.setRowSelectionInterval(rowIndex-copyRow.size(), rowIndex - 1);
+				table.scrollRectToVisible(table.getCellRect(rowIndex - 1, 0, true));
+				
+				((JTable)scroll.getRowHeader().getView()).invalidate();
+				statusBar.setStatus(String.format(Config.getLangBundle().getString("statusRowNumbers"), table.getRowCount()));
+				
+				if (panelMap != null)
+					panelMap.setPoiArray(table.getData());
+			}
+		}
+	}
 
 	@Override
 	public void onAddLine() {
@@ -1284,17 +1308,19 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 			
 			int rowIndex = table.getSelectedRow();
 			
-			setTabTitleModified(true);
-			
-			table.insertRow(rowIndex, lat, lon);
-			table.setRowSelectionInterval(rowIndex, rowIndex);
-			table.scrollRectToVisible(table.getCellRect(rowIndex, 0, true));
-			
-			((JTable)scroll.getRowHeader().getView()).invalidate();
-			statusBar.setStatus(String.format(Config.getLangBundle().getString("statusRowNumbers"), table.getRowCount()));
-			
-			if (panelMap != null)
-				panelMap.setPoiArray(table.getData());
+			if (rowIndex > -1) {
+				setTabTitleModified(true);
+				
+				table.insertRow(rowIndex, lat, lon);
+				table.setRowSelectionInterval(rowIndex, rowIndex);
+				table.scrollRectToVisible(table.getCellRect(rowIndex, 0, true));
+				
+				((JTable)scroll.getRowHeader().getView()).invalidate();
+				statusBar.setStatus(String.format(Config.getLangBundle().getString("statusRowNumbers"), table.getRowCount()));
+				
+				if (panelMap != null)
+					panelMap.setPoiArray(table.getData());
+			}
 		}
 	}
 

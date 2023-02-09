@@ -247,6 +247,10 @@ public class SpudTable extends JTable {
 		((SpudTableModel) this.getModel()).addRow(lat, lon);
 	}
 	
+	public void insertRow(int index, SpudItem copyRow) {
+		((SpudTableModel) this.getModel()).insertRow(index, copyRow);
+	}
+	
 	public void insertRow(int index, double lat, double lon) {
 		((SpudTableModel) this.getModel()).insertRow(index, lat, lon);
 	}
@@ -295,6 +299,10 @@ public class SpudTable extends JTable {
 	        menuItemArea.setIcon(new ImageIcon(getClass().getResource("/spudigo/images/icon16_paste.png")));
 	        menuItemArea.addActionListener(PasteAction);
 	        popupArea.add(menuItemArea);
+	        
+	        menuItemArea = new JMenuItem(Config.getLangBundle().getString("tbInsert"));
+	        menuItemArea.addActionListener(InsertAction);
+	        popupArea.add(menuItemArea);
         }
         
 		if (rowsIndex.length > 0 || copyRow.size() > 0)
@@ -307,7 +315,6 @@ public class SpudTable extends JTable {
 
         if (rowsIndex.length > 0) {
 	        menuItemArea = new JMenuItem(Config.getLangBundle().getString("tbInsertLine"));
-			//menuItemArea.setIcon(new ImageIcon(getClass().getResource("/spudigo/images/icon16_add.png")));
 	        menuItemArea.addActionListener(InsertLineAction);
 	        popupArea.add(menuItemArea);
         
@@ -429,6 +436,13 @@ public class SpudTable extends JTable {
 		}
 	};
 	
+	ActionListener InsertAction = new ActionListener() {
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+			if (spudTableListener != null)
+				spudTableListener.onInsert();
+		}
+	};
+	
 	ActionListener MapCenterAction = new ActionListener() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 			if (spudTableListener != null) {
@@ -449,6 +463,7 @@ public class SpudTable extends JTable {
 		public void onCopy();
 		public void onCut();
 		public void onPaste();
+		public void onInsert();
 		public void onAddLine();
 		public void onInsertLine();
 		public void onDelete();
