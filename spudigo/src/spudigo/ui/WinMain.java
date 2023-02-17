@@ -1205,6 +1205,8 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 					sortIndex[i] = table.getRowSorter().convertRowIndexToModel(selectedIndex[i]);
 				table.removeRows(sortIndex);
 				
+				setTabTitleModified(true);
+				
 				if (rowIndex > -1 && rowIndex < table.getRowCount())
 					table.setRowSelectionInterval(rowIndex, rowIndex);
 				else if (table.getRowCount() > 0 && rowIndex-1 < table.getRowCount())
@@ -1231,8 +1233,18 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 				for (SpudItem item:copyRow)
 					table.addRow(item);
 				
-				table.setRowSelectionInterval(table.getRowCount()-copyRow.size(), table.getRowCount()-1);
-				table.scrollRectToVisible(table.getCellRect(table.getRowCount()-1, 0, true));
+				setTabTitleModified(true);
+				
+				int index = table.getRowSorter().convertRowIndexToView(table.getRowCount()-copyRow.size());
+				table.setRowSelectionInterval(index, index);
+				
+				for (int i = table.getRowCount() - copyRow.size() + 1; i < table.getRowCount(); i++)
+				{
+					index = table.getRowSorter().convertRowIndexToView(i);
+					table.addRowSelectionInterval(index, index);
+				}
+				
+				table.scrollRectToVisible(table.getCellRect(index, 0, true));
 				
 				((JTable)scroll.getRowHeader().getView()).invalidate();
 				statusBar.setStatus(String.format(Config.getLangBundle().getString("statusRowNumbers"), table.getRowCount()));
@@ -1255,8 +1267,18 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 				for (SpudItem item:copyRow)
 					table.insertRow(rowIndex++, item);
 				
-				table.setRowSelectionInterval(rowIndex-copyRow.size(), rowIndex - 1);
-				table.scrollRectToVisible(table.getCellRect(rowIndex - 1, 0, true));
+				setTabTitleModified(true);
+				
+				int index = table.getRowSorter().convertRowIndexToView(rowIndex-copyRow.size());
+				table.setRowSelectionInterval(index, index);
+				
+				for (int i = rowIndex - copyRow.size() + 1; i < rowIndex; i++)
+				{
+					index = table.getRowSorter().convertRowIndexToView(i);
+					table.addRowSelectionInterval(index, index);
+				}
+				
+				table.scrollRectToVisible(table.getCellRect(index, 0, true));
 				
 				((JTable)scroll.getRowHeader().getView()).invalidate();
 				statusBar.setStatus(String.format(Config.getLangBundle().getString("statusRowNumbers"), table.getRowCount()));
@@ -1281,12 +1303,14 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 		if (tabbedPane.getTabCount() > 0) {
 			SpudScroll scroll = (SpudScroll)tabbedPane.getSelectedComponent();
 			SpudTable table = scroll.getTable();
-			
-			setTabTitleModified(true);
-			
+
 			table.addRow(lat, lon);
-			table.setRowSelectionInterval(table.getRowCount()-1, table.getRowCount()-1);
-			table.scrollRectToVisible(table.getCellRect(table.getRowCount()-1, 0, true));
+			
+			setTabTitleModified(true);			
+			
+			int index = table.getRowSorter().convertRowIndexToView(table.getRowCount()-1);
+			table.setRowSelectionInterval(index, index);
+			table.scrollRectToVisible(table.getCellRect(index, 0, true));
 			
 			((JTable)scroll.getRowHeader().getView()).invalidate();
 			statusBar.setStatus(String.format(Config.getLangBundle().getString("statusRowNumbers"), table.getRowCount()));
@@ -1309,11 +1333,13 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 			int rowIndex = table.getSelectedRow();
 			
 			if (rowIndex > -1) {
-				setTabTitleModified(true);
-				
 				table.insertRow(rowIndex, lat, lon);
-				table.setRowSelectionInterval(rowIndex, rowIndex);
-				table.scrollRectToVisible(table.getCellRect(rowIndex, 0, true));
+				
+				setTabTitleModified(true);
+								
+				int index = table.getRowSorter().convertRowIndexToView(rowIndex);
+				table.setRowSelectionInterval(index, index);
+				table.scrollRectToVisible(table.getCellRect(index, 0, true));
 				
 				((JTable)scroll.getRowHeader().getView()).invalidate();
 				statusBar.setStatus(String.format(Config.getLangBundle().getString("statusRowNumbers"), table.getRowCount()));
