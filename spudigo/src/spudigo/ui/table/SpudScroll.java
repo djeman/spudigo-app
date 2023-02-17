@@ -2,10 +2,17 @@ package spudigo.ui.table;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
+import javax.swing.table.TableRowSorter;
 
 public class SpudScroll extends JScrollPane {
 	/**
@@ -27,6 +34,40 @@ public class SpudScroll extends JScrollPane {
 				Dimension d = super.getPreferredSize();
 				d.height = 25;
 				return d;
+			}
+		});
+		
+		rowTable.getTableHeader().addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					if (rowTable.getColumnModel().getColumn(0).getHeaderValue() == "Ψ") {
+						if (getTable().getRowSorter() instanceof TableRowSorter<?>)
+							((TableRowSorter<?>)getTable().getRowSorter()).setRowFilter(null);
+						getTable().getRowSorter().setSortKeys(null);
+					}
+				}
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) { }
+
+			@Override
+			public void mouseReleased(MouseEvent e) { }
+
+			@Override
+			public void mouseEntered(MouseEvent e) { }
+
+			@Override
+			public void mouseExited(MouseEvent e) { }						
+		});
+		
+		this.getTable().getRowSorter().addRowSorterListener(new RowSorterListener() {
+			@Override
+			public void sorterChanged(RowSorterEvent e) {
+				List<? extends SortKey> sortKeys = SpudScroll.this.getTable().getRowSorter().getSortKeys();
+				rowTable.getColumnModel().getColumn(0).setHeaderValue((sortKeys == null || sortKeys.size() < 1) ? " " : "Ψ");				
+				rowTable.getTableHeader().repaint();
 			}
 		});
     }
