@@ -36,12 +36,9 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 		setSelectionModel(main.getSelectionModel());
 		setRowHeight(main.getRowHeight());
 		
-		JLabel rowTableHeader = new JLabel("", null, JLabel.CENTER);
-		rowTableHeader.setVisible(false);
-
 		TableColumn column = new TableColumn();
 		column.setHeaderRenderer(new ImageRenderer());
-		column.setHeaderValue(rowTableHeader);
+		column.setHeaderValue(new JLabel("", null, JLabel.CENTER));
 		addColumn(column);
 		column.setCellRenderer(new RowNumberRenderer());
 
