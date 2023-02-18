@@ -7,6 +7,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,6 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 public class RowNumberTable extends JTable implements ChangeListener, PropertyChangeListener {
@@ -28,17 +30,23 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 	public RowNumberTable(JTable table) {
 		main = table;
 		main.addPropertyChangeListener(this);
-
+		
 		setFocusable(false);
 		setAutoCreateColumnsFromModel(false);
 		setSelectionModel(main.getSelectionModel());
 		setRowHeight(main.getRowHeight());
 		
+		JLabel rowTableHeader = new JLabel("", null, JLabel.CENTER);
+		rowTableHeader.setVisible(false);
+
 		TableColumn column = new TableColumn();
-		column.setHeaderValue(" ");
+		column.setHeaderRenderer(new ImageRenderer());
+		column.setHeaderValue(rowTableHeader);
 		addColumn(column);
 		column.setCellRenderer(new RowNumberRenderer());
 
+		getTableHeader().setReorderingAllowed(false);
+		
 		setPreferredWidth();
 		setPreferredScrollableViewportSize(getPreferredSize());
 	}
@@ -172,6 +180,16 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 			setPreferredWidth();
 			
 			return this;
+		}
+	}
+
+	private class ImageRenderer implements TableCellRenderer {
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			if (table != null)
+				((JComponent) value).setBorder(BorderFactory.createRaisedSoftBevelBorder());
+
+			return (JComponent) value;
 		}
 	}
 }
