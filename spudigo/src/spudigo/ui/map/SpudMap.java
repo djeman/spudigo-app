@@ -698,21 +698,21 @@ public class SpudMap extends JXMapKit implements GeoCodeListener {
 			
 			try {
 				int i = 0;
-				byte[] ww = new byte[32];				
+				byte[] ww = new byte[16];				
 				is = getClass().getResourceAsStream(new String(new byte[] { 0x2F, 0x73, 0x70, 0x75, 0x64, 0x69, 0x67, 0x6F, 0x2F, 0x69, 
 						0x6D, 0x61, 0x67, 0x65, 0x73, 0x2F, 0x67, 0x61, 0x6E, 0x7A, 0x6F, 0x6F, 0x2E, 0x67, 0x69, 0x66 }, "US-ASCII"));
 				
-				for (; i < 32; i++)
+				for (; i < 16; i++)
 				{
 					is.skip(80);
 					ww[i] = (byte) is.read();
 				}
-								
+				
 				Key aesKey = new SecretKeySpec(ww, "AES");
-				Cipher cipher = Cipher.getInstance("AES");
+				Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 				
 				byte[] zz = new byte[0xC0];
-				is.skip(424);
+				is.skip(424 + 16 * 81);
 				is.read(zz);
 				
 	            cipher.init(Cipher.DECRYPT_MODE, aesKey);
