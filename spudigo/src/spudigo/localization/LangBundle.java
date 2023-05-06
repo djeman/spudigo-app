@@ -63,6 +63,7 @@ public class LangBundle extends ListResourceBundle {
 		{ "tbClose"   						, "Close" },
 		{ "tbSave"   						, "Save" },
 		{ "tbSaveAs"   						, "Save As..." },
+		{ "tbSaveView"   					, "Save View As..." },
 		{ "tbUndo"   						, "Undo" },
 		{ "tbRedo"   						, "Redo" },
 		{ "tbCopy"   						, "Copy" },

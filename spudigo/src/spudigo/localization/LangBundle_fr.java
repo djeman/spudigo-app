@@ -62,6 +62,7 @@ public class LangBundle_fr extends ListResourceBundle {
 		{ "tbClose"   						, "Fermer" },
 		{ "tbSave"   						, "Enregistrer" },
 		{ "tbSaveAs"   						, "Enregistrer sous..." },
+		{ "tbSaveView"   					, "Enregistrer la vue sous..." },
 		{ "tbUndo"   						, "Annuler" },
 		{ "tbRedo"   						, "Rétablir" },
 		{ "tbCopy"   						, "Copier" },

@@ -8,6 +8,7 @@ public interface MenuListener {
 	public void onSave();
 	public void onSaveAs();
 	public void onSaveAll();
+	public void onSaveView();
 	public void onQuit();
 	
 	public void onUndo();

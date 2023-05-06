@@ -278,6 +278,10 @@ public class SpudTableModel extends AbstractTableModel {
 		return this.data;
 	}
 	
+	public SpudItem getData(int row) {
+		return this.data.get(row);
+	}
+	
 	public void addRow() {
 		this.data.add(new SpudItem());
 		this.fireTableRowsInserted(getRowCount()-1, getRowCount()-1);

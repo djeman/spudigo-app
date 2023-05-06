@@ -69,7 +69,7 @@ public class SpudTable extends JTable {
 			SpudTableListener spudTableListener, SpudTableModel spudTableModel) {
 		super(spudTableModel);
 		
-		((SpudTableModel) this.getModel()).addUndoableEditListener(undoManager);
+		spudTableModel.addUndoableEditListener(undoManager);
 		
 		this.spudTableListener = spudTableListener;
 		this.filePath = filePath;
@@ -227,6 +227,15 @@ public class SpudTable extends JTable {
 	
 	public ArrayList<SpudItem> getData() {
 		return ((SpudTableModel) this.getModel()).getData();
+	}
+	
+	public ArrayList<SpudItem> getDataAsView() {
+		ArrayList<SpudItem> data = new ArrayList<SpudItem>();
+		
+		for (int i = 0; i < this.getRowCount(); i++)
+			data.add(((SpudTableModel) this.getModel()).getData(getRowSorter().convertRowIndexToModel(i)));
+		
+		return data;
 	}
 	
 	public void undo() {

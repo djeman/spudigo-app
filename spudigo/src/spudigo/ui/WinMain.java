@@ -1087,7 +1087,17 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 		}
 	}
 	
+	@Override
+	public synchronized void onSaveView() {
+		if (tabbedPane.getTabCount() > 0)
+			saveFile(tabbedPane.getSelectedIndex(), -1, true, true);
+	}
+	
 	private int saveFile(int index, int askForIgo, boolean saveAs) {
+		return saveFile(index, askForIgo, saveAs, false);
+	}
+	
+	private int saveFile(int index, int askForIgo, boolean saveAs, boolean asView) {
 		if (index > -1) {
 			SpudScroll scroll = (SpudScroll)tabbedPane.getComponentAt(index);
 			SpudTable table = scroll.getTable();
@@ -1106,18 +1116,26 @@ public class WinMain extends JFrame implements MenuListener, ParseFileListener, 
 				
 					if (fileToSave == null || askToReplaceFile(fileToSave, false) != 0)
 						return -2;
-				} 
+				}
 				
 				if (askForIgo < 0) {
 					if (!table.isTxt())
 						askForIgo = askIgo8Primo();
-									
-					if (askForIgo == 2) return askForIgo;
+					
+					if (askForIgo == 2) 
+						return askForIgo;
 				}
-								
-				new Thread(new SaveFile(fileToSave, this, table.isTxt(), templates.get(toolBarModel.getComboInValue()), 
-					templates.get(toolBarModel.getComboOutValue()), table.getData(), (askForIgo==0?true:false), 
-					true, false, index, l)).start();
+				
+				new Thread(new SaveFile(fileToSave, 
+						this, 
+						table.isTxt(), 
+						templates.get(toolBarModel.getComboInValue()), 
+						templates.get(toolBarModel.getComboOutValue()), 
+						(asView?table.getDataAsView():table.getData()), 
+						(askForIgo==0?true:false), 
+						true, 
+						false, 
+						(asView?-1:index), l)).start();
 			}
 		}
 		

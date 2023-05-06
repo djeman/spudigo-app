@@ -12,6 +12,7 @@ public class MenuActionListener implements ActionListener {
 		Save,
 		SaveAs,
 		SaveAll,
+		SaveView,
 		Quit,
 		
 		Undo,
@@ -79,6 +80,9 @@ public class MenuActionListener implements ActionListener {
 				return;
 			case SaveAll:
 				menuListener.onSaveAll();
+				return;
+			case SaveView:
+				menuListener.onSaveView();
 				return;
 			case Quit:
 				menuListener.onQuit();

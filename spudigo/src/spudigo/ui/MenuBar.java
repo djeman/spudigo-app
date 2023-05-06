@@ -105,6 +105,15 @@ public class MenuBar extends JMenuBar {
 		
 		menu.addSeparator();
 		
+		// File -> Save View
+		menuItem = new JMenuItem(Config.getLangBundle().getString("tbSaveView"));
+		menuItem.setIcon(new ImageIcon(getClass().getResource("/spudigo/images/icon16_saveas.png")));
+		menuItem.setActionCommand(ActionName.SaveView.toString());
+		menuItem.addActionListener(actionListener);
+		menu.add(menuItem);
+		
+		menu.addSeparator();
+		
 		// File -> Quit
 		menuItem = new JMenuItem(Config.getLangBundle().getString("mbExit"));
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
