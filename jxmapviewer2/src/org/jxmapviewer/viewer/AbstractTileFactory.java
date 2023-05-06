@@ -23,6 +23,13 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.HostnameVerifier;
+import java.security.cert.X509Certificate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,6 +50,28 @@ public abstract class AbstractTileFactory extends TileFactory
 	public AbstractTileFactory(TileFactoryInfo info)
 	{
 		super(info);
+		
+		// Create a trust manager that does not validate certificate chains
+		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+			public X509Certificate[] getAcceptedIssuers() { return null; }
+			public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+			public void checkServerTrusted(X509Certificate[] certs, String authType) { }
+		}};
+		
+		// Install the all-trusting trust manager
+		try {
+		    SSLContext sc = SSLContext.getInstance("TLS");
+		    sc.init(null, trustAllCerts, null);
+		    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+		} catch (Exception e) {	}
+		
+		// Create all-trusting host name verifier
+        HostnameVerifier allHostsValid = new HostnameVerifier() {
+            public boolean verify(String hostname, SSLSession session) { return true; }
+        };
+        
+        // Install the all-trusting host verifier
+        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 	}
 
 	// private static final boolean doEagerLoading = true;
@@ -55,7 +84,7 @@ public abstract class AbstractTileFactory extends TileFactory
 	private Map<String, Tile> tileMap = new HashMap<String, Tile>();
 
 	private TileCache cache = new TileCache();
-
+	
 	/**
 	 * Returns the tile that is located at the given tilePoint 
 	 * for this zoom. For example, if getMapSize() returns 10x20
