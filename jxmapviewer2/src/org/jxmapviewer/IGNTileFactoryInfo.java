@@ -79,20 +79,27 @@ public class IGNTileFactoryInfo extends TileFactoryInfo
 	}
 
 	private MVEMode mode;
-	
 	private String parcelBaseUrl;
-	
-	public IGNTileFactoryInfo(MVEMode mode, String key, String parcelKey) {
+		
+	public IGNTileFactoryInfo(MVEMode mode) {
 		super("IGN", 
 				MIN_ZOOM_LEVEL, mode.maxZoom, mode.topZoom, 
 				TILE_SIZE, true, true,
-				"https://wxs.ign.fr/" + key + 
-				"/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&TILEMATRIXSET=PM&",
+				"https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&TILEMATRIXSET=PM&",
 				"", "", "");
 		
-		this.parcelBaseUrl = "https://wxs.ign.fr/" + parcelKey + 
-				"/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&TILEMATRIXSET=PM&LAYER=CADASTRALPARCELS.PARCELS&";
+		this.parcelBaseUrl = this.baseURL + "LAYER=CADASTRALPARCELS.PARCELS&";		
+		this.mode = mode;
+	}
+	
+	public IGNTileFactoryInfo(MVEMode mode, String mapKey) {
+		super("IGN", 
+				MIN_ZOOM_LEVEL, mode.maxZoom, mode.topZoom, 
+				TILE_SIZE, true, true,
+				"https://data.geopf.fr/private/wmts?apikey=" + mapKey + "&SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&TILEMATRIXSET=PM&",
+				"", "", "");
 		
+		this.parcelBaseUrl = "https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&TILEMATRIXSET=PM&&LAYER=CADASTRALPARCELS.PARCELS&";		
 		this.mode = mode;
 	}
 	

@@ -9,35 +9,33 @@ public class HereTileFactoryInfo extends TileFactoryInfo {
 	/**
 	 * Use road map
 	 */
-	public final static MVEMode ROAD = new MVEMode("Road", "base", "normal.day");
+	public final static MVEMode ROAD = new MVEMode("Road", "explore.day");
 
 	/**
 	 * Use satellite map
 	 */
-	public final static MVEMode SAT = new MVEMode("Satellite", "aerial" ,"satellite.day");
+	public final static MVEMode SAT = new MVEMode("Satellite", "satellite.day");
 
 	/**
 	 * Use satellite with labels map
 	 */
-	public final static MVEMode SATWITHLABELS = new MVEMode("Satellite with labels", "aerial", "hybrid.day");
+	public final static MVEMode SATWITHLABELS = new MVEMode("Satellite with labels", "explore.satellite.day");
 
 	/**
 	 * Use terrain with labels map
 	 */
-	public final static MVEMode TERRAINWITHLABELS = new MVEMode("Terrain with labels", "aerial", "terrain.day");
+	public final static MVEMode TERRAINWITHLABELS = new MVEMode("Terrain with labels", "topo.day");
 	
 	/**
 	 * The map mode
 	 */
 	public static class MVEMode {
 		private String name;
-		private String type;
-		private String scheme;
+		private String parameter;
 
-		private MVEMode(final String name, final String type, final String scheme) {
+		private MVEMode(final String name, final String parameter) {
 			this.name = name;
-			this.type = type;
-			this.scheme = scheme;
+			this.parameter = parameter;
 		}
 	}
 
@@ -51,7 +49,7 @@ public class HereTileFactoryInfo extends TileFactoryInfo {
 	
 	private String apiKey;
 	
-	private static final String copyright = "© 2023 HERE";
+	private static final String copyright = "© 2024 HERE";
 
 	/**
 	 * @param mode the mode
@@ -63,7 +61,7 @@ public class HereTileFactoryInfo extends TileFactoryInfo {
 		
 		this.mode = mode;
 		this.apiKey = apiKey;
-		this.culture = Locale.getDefault().getISO3Language();
+		this.culture = Locale.getDefault().getLanguage();
 	}
 	
 	public String getModeName() {
@@ -73,9 +71,8 @@ public class HereTileFactoryInfo extends TileFactoryInfo {
 	@Override
 	public String getTileUrl(final int x, final int y, final int zoom)
 	{
-		return "https://1." + mode.type + ".maps.ls.hereapi.com/maptile/2.1/maptile/newest/" +
-				mode.scheme + "/" + (TOP_ZOOM_LEVEL - zoom) + "/" + x + "/" + y + "/" + TILE_SIZE + 
-				"/jpg?apiKey=" + this.apiKey + "&lg=" + this.culture;
+		return "https://maps.hereapi.com/v3/base/mc/" + (TOP_ZOOM_LEVEL - zoom) + "/" + x + "/" + y + "/jpeg?" + 
+				"style=" + this.mode.parameter + "&size=" + TILE_SIZE + "&lang=" + this.culture + "&apiKey=" + this.apiKey;
 	}
 	
 	@Override

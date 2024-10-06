@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -536,31 +537,31 @@ public class SpudMap extends JXMapKit implements GeoCodeListener {
 				break;
 			case IgnMaps:
 				mapSelected = Providers.IgnMaps;
-				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPS, mapApiKey.ign, mapApiKey.ignParcel), false);
+				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPS, mapApiKey.ign), false);
 				break;
 			case IgnMapsClassic:
 				mapSelected = Providers.IgnMapsClassic;
-				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPSCLASSIC, mapApiKey.ignEssentiels, mapApiKey.ignParcel), false);
+				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPSCLASSIC), false);
 				break;
 			case IgnMapsCadastral:
 				mapSelected = Providers.IgnMapsCadastral;
-				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPSCADASTRAL, mapApiKey.ign, mapApiKey.ignParcel), false);
+				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPSCADASTRAL, mapApiKey.ign), false);
 				break;
 			case IgnPhotosCadastral:
 				mapSelected = Providers.IgnPhotosCadastral;
-				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.PHOTOSCADASTRAL, mapApiKey.ignEssentiels, mapApiKey.ignParcel), false);
+				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.PHOTOSCADASTRAL), false);
 				break;
 			case IgnPhotos:
 				mapSelected = Providers.IgnPhotos;
-				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.PHOTOS, mapApiKey.ignEssentiels, mapApiKey.ignParcel), false);
+				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.PHOTOS), false);
 				break;
 			case IgnMapsScanOACI:
 				mapSelected = Providers.IgnMapsScanOACI;
-				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPSSCANOACI, mapApiKey.ign, mapApiKey.ignParcel), false);
+				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPSSCANOACI, mapApiKey.ign), false);
 				break;
 			case IgnMapsScan25:
 				mapSelected = Providers.IgnMapsScan25;
-				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPSSCAN25, mapApiKey.ign, mapApiKey.ignParcel), false);
+				setNewTileFactory(new IGNTileFactoryInfo(IGNTileFactoryInfo.MAPSSCAN25, mapApiKey.ign), false);
 				break;
 			default:
 				mapSelected = Providers.OSMRoad;
@@ -710,8 +711,8 @@ public class SpudMap extends JXMapKit implements GeoCodeListener {
 				
 				Key aesKey = new SecretKeySpec(ww, "AES");
 				Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-				
-				byte[] zz = new byte[0xC0];
+								
+				byte[] zz = new byte[0xA0];
 				is.skip(424 + 16 * 81);
 				is.read(zz);
 				
@@ -724,8 +725,6 @@ public class SpudMap extends JXMapKit implements GeoCodeListener {
 				tomtom = values[i++];
 				here = values[i++];
 				ign = values[i++];
-				ignParcel = values[i++];
-				ignEssentiels = values[i++];
 			} catch (Exception e) {
 				// Nothing to log
 			} finally {
@@ -752,21 +751,11 @@ public class SpudMap extends JXMapKit implements GeoCodeListener {
 			value = Config.getInstance().getString("map.provider.ign.key");			
 			if (value != null && value.length() > 0)
 				ign = value;
-			
-			value = Config.getInstance().getString("map.provider.ign.parcel.key");			
-			if (value != null && value.length() > 0)
-				ignParcel = value;
-			
-			value = Config.getInstance().getString("map.provider.ign.essentiels.key");			
-			if (value != null && value.length() > 0)
-				ignEssentiels = value;
 		}
 		
 		public String bing;
 		public String tomtom;
 		public String here;
 		public String ign;
-		public String ignParcel;
-		public String ignEssentiels;
 	}
 }
