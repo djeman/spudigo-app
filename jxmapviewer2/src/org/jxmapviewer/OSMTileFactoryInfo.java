@@ -20,7 +20,7 @@ public class OSMTileFactoryInfo extends TileFactoryInfo
 		super("OpenStreetMap", 
 				1, max - 2, max, 
 				256, true, true, 					// tile size is 256 and x/y orientation is normal
-				"http://tile.openstreetmap.org",
+				"https://tile.openstreetmap.org",
 				"", "", "");						// 5/15/10.png
 	}
 
