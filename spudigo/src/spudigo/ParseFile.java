@@ -163,9 +163,9 @@ public class ParseFile implements Runnable {
 	    	int indexLabelsMax = 0;
 	    	String[] labels = null;
 	    	Map<String, Integer> colIndex = null;
-	        String line = br.readLine();
+	        String line = null;
 	        
-	        while (line != null) {
+	        while ((line = br.readLine()) != null) {
 	        	if (line.isEmpty())
 	        		continue;
 	        	
@@ -250,7 +250,6 @@ public class ParseFile implements Runnable {
 		        	} else {
 		        		nbrIgnored++;
 		        	}
-		            line = br.readLine();
 	        	} else {
 	        		errorMess = Config.getLangBundle().getString("badheader");
 	        		break;
