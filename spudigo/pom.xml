@@ -75,5 +75,11 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.sigpwned/chardet4j -->
+	<dependency>
+	    <groupId>com.sigpwned</groupId>
+	    <artifactId>chardet4j</artifactId>
+	    <version>77.1.0</version>
+	</dependency>
   </dependencies>
 </project>

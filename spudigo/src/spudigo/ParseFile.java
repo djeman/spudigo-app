@@ -18,6 +18,9 @@ import java.util.Map;
 
 import javax.xml.bind.DatatypeConverter;
 
+import com.sigpwned.chardet4j.com.ibm.icu.text.CharsetDetector;
+import com.sigpwned.chardet4j.com.ibm.icu.text.CharsetMatch;
+
 public class ParseFile implements Runnable {
 	final public static int TYPE_FILE_ERROR = -1;
 	final public static int TYPE_FILE_TXT = 0;
@@ -157,110 +160,143 @@ public class ParseFile implements Runnable {
 		int nbrError = 0;
 		int nbrIgnored = 0;
 		String errorMess = null;
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(spudFile), "ISO-8859-1"));
-	    try {
-	    	int indexLabelsMax = 0;
-	    	String[] labels = null;
-	    	Map<String, Integer> colIndex = null;
-	        String line = null;
-	        
-	        while ((line = br.readLine()) != null) {
-	        	if (line.isEmpty())
-	        		continue;
-	        	
-	        	if (labels == null) {
-	        		labels = line.split(",");
-	        		colIndex = new HashMap<String,Integer>();
-	        		
-	        		for (int i=0;i<labels.length;i++) {
-	        			switch (labels[i].trim().toLowerCase(Locale.US)) {
-		        			case "x":
-		        				indexLabelsMax = Math.max(indexLabelsMax, i);
-		        				colIndex.put("x", i);
-		        				break;
-		        			case "y":
-		        				indexLabelsMax = Math.max(indexLabelsMax, i);
-		        				colIndex.put("y", i);
-		        				break;
-		        			case "type":
-		        				indexLabelsMax = Math.max(indexLabelsMax, i);
-		        				colIndex.put("type", i);
-		        				break;
-		        			case "speed":
-		        				indexLabelsMax = Math.max(indexLabelsMax, i);
-		        				colIndex.put("speed", i);
-		        				break;
-		        			case "dirtype":
-		        				indexLabelsMax = Math.max(indexLabelsMax, i);
-		        				colIndex.put("dirtype", i);
-		        				break;
-		        			case "direction":
-		        				indexLabelsMax = Math.max(indexLabelsMax, i);
-		        				colIndex.put("direction", i);
-		        				break;
-		        			case "comment":
-		        				indexLabelsMax = Math.max(indexLabelsMax, i);
-		        				colIndex.put("comment", i);
-		        				break;
-	        			}
-	        		}
-	        		continue;
-	        	}
-	        	
-	        	if (colIndex.size() > 5) {	        		        	
-		        	String[] values = line.split(",");
-		        	if (values !=null && values.length > 5 && values.length > indexLabelsMax) {
-		        		try {
-		        			SpudItem item = new SpudItem(
-		        					getDouble(values[colIndex.get("y")])%90.00,
-		        					getDouble(values[colIndex.get("x")])%180.00);
-		        			item.setTxtType(getInteger(values[colIndex.get("type")]));
-		        			item.setSpeed(getInteger(values[colIndex.get("speed")])%256);
-		        			item.setDirType(getInteger(values[colIndex.get("dirtype")])%3);
-		        			
-		        			if (values[colIndex.get("direction")].contains(";")) {
-		        				String[] newComments = line.split(";");
-		        				String[] newValues = newComments[0].split(",");
-		        				
-		        				item.setDirection(getInteger(newValues[5])%360);
-		        				item.setExtraComment(newComments[1]);
-		        			} else {
-		        				item.setDirection(getInteger(values[colIndex.get("direction")])%360);
-		        			}
-		        			
-		        			if (colIndex.get("comment") != null && values.length > colIndex.get("comment"))
-		        				item.setComment(values[colIndex.get("comment")]);
-		        			
-		        			if (values.length > labels.length) {
-		        				StringBuilder cmt = new StringBuilder();
-		        		    	for (int i=0;i<values.length-labels.length;i++) {
-		        		    		cmt.append(values[i+labels.length]);
-		        		    		if (i!=values.length-labels.length-1)cmt.append(",");
-		        		    	}
-		        				
-		        				item.setComment(item.getComment() + cmt.toString());
-		        			}
-		        			
-		        			data.add(item);
-		        		} catch (NumberFormatException | NullPointerException e) {
-		        			if (!values[colIndex.get("x")].equals("X"))
-		        				nbrError++;
-		        		}
-		        	} else {
-		        		nbrIgnored++;
-		        	}
-	        	} else {
-	        		errorMess = Config.getLangBundle().getString("badheader");
-	        		break;
-	        	}
-	        }
-	    } finally {
-	        br.close();
-	    }
-		
-	    data.trimToSize();
+
+		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(spudFile));
+
+		CharsetDetector detector = new CharsetDetector();
+		detector.setText(bis);
+		CharsetMatch match = detector.detect();
+
+		if (match.getName().startsWith("UTF-16")) {
+			bis.skip(2);
+		} else if (match.getName().startsWith("UTF-8")) {
+			byte[] bom = new byte[3];
+
+			bis.mark(3);
+			bis.read(bom, 0, 3);
+			if ((bom[0] != (byte) 0xEF) || (bom[1] != (byte) 0xBB) || (bom[2] != (byte) 0xBF))
+				bis.reset();
+		}
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(bis, match.getName()));
+		try {
+			int lengthLabels = 0;
+			int indexLabelsMin = 0;
+
+			Map<String, Integer> colIndex = null;
+			String line = null;
+
+			while ((line = br.readLine()) != null) {
+				line = line.trim();
+				if (line.isEmpty())
+					continue;
+
+				String[] values = line.split(",");
+
+				if (lengthLabels == 0) {
+					lengthLabels = values.length;
+					colIndex = new HashMap<String, Integer>();
+
+					indexLabelsMin = parseHeaderTextFile(values, colIndex);
+					if (indexLabelsMin < 0) {
+						errorMess = Config.getLangBundle().getString("badheader");
+						break;
+					}
+
+					continue;
+				}
+
+				if (values.length < indexLabelsMin) {
+					nbrIgnored++;
+					continue;
+				}
+
+				try {
+					SpudItem item = new SpudItem(getDouble(values[colIndex.get("y")]) % 90.00,
+							getDouble(values[colIndex.get("x")]) % 180.00);
+					item.setTxtType(getInteger(values[colIndex.get("type")]));
+					item.setSpeed(getInteger(values[colIndex.get("speed")]) % 256);
+
+					if (colIndex.containsKey("dirtype") && values.length > colIndex.get("dirtype"))
+						item.setDirType(getInteger(values[colIndex.get("dirtype")]) % 3);
+
+					if (colIndex.containsKey("direction") && values.length > colIndex.get("direction")) {
+						if (values[colIndex.get("direction")].contains(";")) {
+							String[] newComments = line.split(";");
+							String[] newValues = newComments[0].split(",");
+
+							item.setDirection(getInteger(newValues[5]) % 360);
+							item.setExtraComment(newComments[1]);
+						} else {
+							item.setDirection(getInteger(values[colIndex.get("direction")]) % 360);
+						}
+					}
+
+					if (colIndex.containsKey("comment") && values.length > colIndex.get("comment"))
+						item.setComment(values[colIndex.get("comment")]);
+
+					if (values.length > lengthLabels) {
+						StringBuilder cmt = new StringBuilder();
+						for (int i = 0; i < values.length - lengthLabels; i++) {
+							cmt.append(values[i + lengthLabels]);
+							if (i != values.length - lengthLabels - 1)
+								cmt.append(",");
+						}
+
+						item.setComment(item.getComment() + cmt.toString());
+					}
+
+					data.add(item);
+				} catch (NumberFormatException | NullPointerException e) {
+					if (!values[colIndex.get("x")].trim().toLowerCase().equals("x"))
+						nbrError++;
+				}
+			}
+		} finally {
+			br.close();
+		}
+
+		data.trimToSize();
 		parseFileListener.onFileParsed(data, spudFile.getPath(), true, nbrError, nbrIgnored, errorMess);
+	}
+	
+	private int parseHeaderTextFile(String[] labels, Map<String, Integer> colIndex) {
+		byte controlValue = 0;
+		int indexLabelsMin = 0;
+
+		for (int i = 0; i < labels.length; i++) {
+			labels[i] = labels[i].trim().toLowerCase(Locale.US);
+
+			switch (labels[i]) {
+				case "x":
+					indexLabelsMin = Math.max(indexLabelsMin, i);
+					controlValue |= 0b1;
+					colIndex.put(labels[i], i);
+					break;
+				case "y":
+					indexLabelsMin = Math.max(indexLabelsMin, i);
+					controlValue |= 0b10;
+					colIndex.put(labels[i], i);
+					break;
+				case "type":
+					indexLabelsMin = Math.max(indexLabelsMin, i);
+					controlValue |= 0b100;
+					colIndex.put(labels[i], i);
+					break;
+				case "speed":
+					indexLabelsMin = Math.max(indexLabelsMin, i);
+					controlValue |= 0b1000;
+					colIndex.put(labels[i], i);
+					break;
+				case "dirtype":
+				case "direction":
+				case "comment":
+					colIndex.put(labels[i], i);
+					break;
+			}
+		}
+
+		return (controlValue == 0b1111) ? indexLabelsMin : -1;
 	}
 	
 	private Double getDouble(String value) throws NumberFormatException, NullPointerException {
@@ -275,41 +311,49 @@ public class ParseFile implements Runnable {
 		else
 			return 0;
 	}
-	
+
 	private int checkFile() throws IOException {
 		int res = TYPE_FILE_ERROR;
-		
+
 		long len = spudFile.length();
-		if (len < 13) 
+		if (len < 13)
 			return TYPE_FILE_EMPTY;
-		
-		FileInputStream in = new FileInputStream(spudFile);
-		byte[] data = new byte[13];
-		
+
+		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(spudFile));
+		CharsetMatch match;
+
+		byte[] data = new byte[1024];
+
 		try {
-		    in.read(data);
+			try {
+				CharsetDetector detector = new CharsetDetector();
+				detector.setText(bis);
+				match = detector.detect();
+			} catch (Exception ex) {
+				match = null;
+			}
+
+			bis.read(data);
 		} finally {
-			in.close();
+			bis.close();
 		}
-		
-		if (data != null) {
-			String s = new String(data, "ISO-8859-1");
-			if (s.contains(",")) {
+
+		if (match != null) {
+			String str = new String(data, match.getName());
+			int pos = -1;
+			if ((pos = str.indexOf(',')) > 0 && (pos = str.indexOf(',', pos + 1)) > 0
+					&& (pos = str.indexOf(',', pos + 1)) > 0 && (pos = str.indexOf(',', pos + 1)) > 0) {
 				res = TYPE_FILE_TXT;
-				for (int i=0;i<13;i++) {
-					if ((data[i] & 0xFF) < 0x20 || ((data[i] & 0xFF) > 0x7E && (data[i] & 0xFF) < 0xFF)) 
-						res = TYPE_FILE_ERROR;
-				}
-			}
-			
-			if (res == TYPE_FILE_ERROR) {
-				if (len%37 == 0)
-					res = TYPE_FILE_SPUD_PRIMO;
-				else if (len%13 == 0)
-					res = TYPE_FILE_SPUD_IGO8;
 			}
 		}
-		
+
+		if (res == TYPE_FILE_ERROR) {
+			if (len % 37 == 0)
+				res = TYPE_FILE_SPUD_PRIMO;
+			else if (len % 13 == 0)
+				res = TYPE_FILE_SPUD_IGO8;
+		}
+
 		return res;
 	}
 
